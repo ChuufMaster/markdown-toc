@@ -27,7 +27,7 @@ end
 
 function M.pick_git_file(callback)
   local git_dir = vim.fn.finddir('.git', vim.fn.getcwd() .. ';')
-  print(git_dir ~= '')
+  -- print(git_dir ~= '')
   if git_dir == '' then
     builtin.find_files({
       prompt_title = 'Select a file from CWD',
