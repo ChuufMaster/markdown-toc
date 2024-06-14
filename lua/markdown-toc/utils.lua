@@ -35,6 +35,9 @@ function M.process_heading(content, filepath, heading_level_to_match)
       local heading_anchor = heading_text:gsub('%s+', '-')
       heading_anchor = heading_anchor:lower()
       print(heading_anchor)
+      if heading_anchor:find('[\u{FE0F}]') then
+        heading_anchor = '%EF%B8%8F' .. heading_anchor
+      end
       heading_anchor = heading_anchor:gsub('[\u{1F600}-\u{1F64F}]', '')
       local formatted_line = string.format(
         config.options.toc_format,

@@ -6,12 +6,12 @@ markdown file from another markdown files headings
 ## 🗂️ Markdown-TOC TOC
 
 - [🧐 What is markdown-toc?](<#-what-is-markdown-toc?>)
-  - [🗂️ Markdown-TOC TOC](<#-markdown-toc-toc>)
+  - [🗂️ Markdown-TOC TOC](<#%EF%B8%8F-markdown-toc-toc>)
   - [✨ Features](<#-features>)
-  - [⚡️ Requirements](<#-requirements>)
+  - [⚡️ Requirements](<#%EF%B8%8F-requirements>)
   - [📦 Installation](<#-installation>)
   - [🚀 Usage](<#-usage>)
-  - [⚙️ Configuration](<#-configuration>)
+  - [⚙️ Configuration](<#%EF%B8%8F-configuration>)
 
 ## ✨ Features
 
