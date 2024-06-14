@@ -3,6 +3,8 @@
 A Neovim plugin to generate, update and delete TOCs (Table of Contents) in a
 markdown file from another markdown files headings
 
+![markdown-toc](https://github.com/ChuufMaster/markdown-toc/assets/82512988/47c3abe3-b752-4dbe-8359-b112786656a9)
+
 ## 🗂️ Markdown-TOC TOC
 
 - [🧐 What is markdown-toc?](<#-what-is-markdown-toc?>)
