@@ -21,6 +21,8 @@ markdown file from another markdown files headings
 - Update a table if you are inside of TOC it when calling `GenerateTOC`
 - Markdown-TOC uses relative file paths so you won't have to worry about where
   the file you are using to generate the TOC is
+- Markdown-TOC properly encodes headings with emojis handling emojis that need
+  special delimiters and others that don't
 
 ## ⚡️ Requirements
 

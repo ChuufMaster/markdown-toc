@@ -34,11 +34,32 @@ function M.process_heading(content, filepath, heading_level_to_match)
       local tabs = string.rep('\t', level)
       local heading_anchor = heading_text:gsub('%s+', '-')
       heading_anchor = heading_anchor:lower()
-      print(heading_anchor)
+
+      --[[ 
+      --  This little block of code gave a lot of probles but for anyone interested
+      --  the reason why you have to add '%EF%B8%8F' for cases where the string has 
+      --  the unicode character U+FE0F is because of unicode variations which take up two
+      --  character spaces compared to the usual one. You need to do this becacuase it
+      --  some emojis are built on top of "plain text" emojis, like the heart which
+      --  can be rendered as either a red heart ❤️ which is the VS16 variation or it can
+      --  be rendered as normal character ❤ which is the VS15 selector. 
+      --
+      --  For some reason on GitHub if the emojis has a VS16 selector then the
+      --  heading anchor needs to have '%EF%B8%8F' wherever the emojis appears
+      --
+      --  If you ever want to see how this works and that the emojis do actually
+      --  take up two charcters go into github and edit a file on github that
+      --  has an emoji with a VS16 variation and when you use backspace it will
+      --  first become the VS15 variation before you then need to hit backspace
+      --  to delete the emoji
+      --]]
+
       if heading_anchor:find('[\u{FE0F}]') then
-        heading_anchor = '%EF%B8%8F' .. heading_anchor
+        heading_anchor =
+          heading_anchor:gsub('[\u{1F600}-\u{1F64F}]', '%EF%B8%8F')
+      else
+        heading_anchor = heading_anchor:gsub('[\u{1F600}-\u{1F64F}]', '')
       end
-      heading_anchor = heading_anchor:gsub('[\u{1F600}-\u{1F64F}]', '')
       local formatted_line = string.format(
         config.options.toc_format,
         tabs,
