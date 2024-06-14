@@ -55,11 +55,12 @@ function M.process_heading(content, filepath, heading_level_to_match)
       --]]
 
       if heading_anchor:find('[\u{FE0F}]') then
-        heading_anchor =
-          heading_anchor:gsub('[\u{1F600}-\u{1F64F}]', '%EF%B8%8F')
-      else
-        heading_anchor = heading_anchor:gsub('[\u{1F600}-\u{1F64F}]', '')
+        heading_anchor = heading_anchor:gsub('[\u{FE0F}]', '')
+        heading_anchor = heading_anchor:gsub('[\u{1F600}-\u{1F64F}]', function()
+          return '%EF%B8%8F'
+        end, 1)
       end
+      heading_anchor = heading_anchor:gsub('[\u{1F600}-\u{1F64F}]', '')
       local formatted_line = string.format(
         config.options.toc_format,
         tabs,
