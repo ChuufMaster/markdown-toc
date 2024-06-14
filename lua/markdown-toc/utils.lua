@@ -2,6 +2,7 @@ local config = require('markdown-toc.config')
 local select_heading_level = require('markdown-toc.select_heading_level')
 local pick_git_file = require('markdown-toc.pick_paths').pick_git_file
 local get_relative_path = require('markdown-toc.pick_paths').get_relative_path
+local delete_TOC = require('markdown-toc.delete_TOC').delete_TOC
 local M = {}
 
 function M.read_file(filepath)
@@ -22,8 +23,6 @@ function M.process_heading(content, filepath, heading_level_to_match)
   end
 
   local output = {}
-  local filename = filepath:match('^.+/(.+)$')
-  local basename = filename:match('(.+)%..+$')
 
   local current_buffer = vim.api.nvim_buf_get_name(0)
   local relative_path = get_relative_path(current_buffer, filepath)
@@ -35,6 +34,8 @@ function M.process_heading(content, filepath, heading_level_to_match)
       local tabs = string.rep('\t', level)
       local heading_anchor = heading_text:gsub('%s+', '-')
       heading_anchor = heading_anchor:lower()
+      print(heading_anchor)
+      heading_anchor = heading_anchor:gsub('[\u{1F600}-\u{1F64F}]', '')
       local formatted_line = string.format(
         config.options.toc_format,
         tabs,
@@ -53,9 +54,18 @@ function M.process_heading(content, filepath, heading_level_to_match)
 
   local toc = table.concat(output, '\n')
 
+  delete_TOC()
+
   local current_buf = vim.api.nvim_get_current_buf()
   local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-  vim.api.nvim_buf_set_lines(current_buf, row, row, false, vim.split(toc, '\n'))
+
+  vim.api.nvim_buf_set_lines(
+    current_buf,
+    row - 1,
+    row - 1,
+    false,
+    vim.split(toc, '\n')
+  )
 end
 
 function M.generate_toc_from_file(filepath, heading_level_to_match)
@@ -91,28 +101,16 @@ function M.pick_file_with_telescope(args)
 
     M.generate_toc_from_file(filepath, heading_level)
   end)
-  -- args = args or nil
-  -- local heading_level
-  -- if args ~= nil then
-  --   heading_level = tonumber(args)
-  -- end
-  -- builtin.find_files({
-  --   prompt_title = 'Select Markwon File',
-  --   attach_mappings = function(_, map)
-  --     map('i', '<CR>', function(prompt_bufnr)
-  --       local selection = action_state.get_selected_entry()
-  --       actions.close(prompt_bufnr)
-  --       M.generate_toc_from_file(selection.path, heading_level)
-  --     end)
-  --     return true
-  --   end,
-  -- })
 end
 
 function M.load()
   vim.api.nvim_create_user_command('GenerateTOC', function(opts)
     M.pick_file_with_telescope(opts.args)
   end, { nargs = '?' })
+
+  vim.api.nvim_create_user_command('DeleteTOC', function()
+    delete_TOC()
+  end, {})
 end
 
 return M
