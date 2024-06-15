@@ -40,7 +40,7 @@ Install the plugin with your preferred package manager:
 ```lua
 return {
   {
-    'ChuufMaster/markdown-toc'
+    'ChuufMaster/markdown-toc',
     opts = {
 
       -- The heading level to match (i.e the number of "#"s to match to) max 6
