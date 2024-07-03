@@ -1,7 +1,8 @@
 local config = require('markdown-toc.config')
 local select_heading_level = require('markdown-toc.select_heading_level')
 local pick_git_file = require('markdown-toc.pick_paths').pick_git_file
-local get_relative_path = require('markdown-toc.pick_paths').get_relative_path
+local get_relative_path =
+  require('markdown-toc.relative_path').get_relative_path
 local delete_TOC = require('markdown-toc.delete_TOC').delete_TOC
 local M = {}
 
