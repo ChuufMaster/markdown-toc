@@ -27,11 +27,19 @@ function M.process_heading(content, filepath, heading_level_to_match)
   local current_buffer = vim.api.nvim_buf_get_name(0)
   local relative_path = get_relative_path(current_buffer, filepath)
 
+  local expandtab = vim.api.nvim_get_option('expandtab')
+
   for _, line in ipairs(lines) do
     local heading_level, heading_text = line:match('^(#+)%s*(.+)')
     if heading_level and heading_text then
       local level = #heading_level - 1
-      local tabs = string.rep('\t', level)
+
+      local indent = string.rep('\t', level)
+      if expandtab then
+        local tabstop = vim.api.nvim_get_option('tabstop')
+        indent = string.rep(' ', level * tabstop)
+      end
+
       local heading_anchor = heading_text:gsub('%s+', '-')
       heading_anchor = heading_anchor:lower()
 
@@ -63,7 +71,7 @@ function M.process_heading(content, filepath, heading_level_to_match)
       heading_anchor = heading_anchor:gsub('[\u{1F600}-\u{1F64F}]', '')
       local formatted_line = string.format(
         config.options.toc_format,
-        tabs,
+        indent,
         heading_text,
         relative_path,
         heading_anchor
