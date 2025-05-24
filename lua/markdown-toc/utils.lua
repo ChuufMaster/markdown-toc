@@ -37,7 +37,8 @@ function M.process_heading(content, filepath, heading_level_to_match)
 
       local indent = string.rep('\t', level)
       if expandtab then
-        local tabstop = vim.api.nvim_get_option_value('tabstop')
+        local tabstop =
+          vim.api.nvim_get_option_value('tabstop', { scope = 'global' })
         indent = string.rep(' ', level * tabstop)
       end
 
