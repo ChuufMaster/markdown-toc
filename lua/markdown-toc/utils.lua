@@ -27,8 +27,7 @@ function M.process_heading(content, filepath, heading_level_to_match)
   local current_buffer = vim.api.nvim_buf_get_name(0)
   local relative_path = get_relative_path(current_buffer, filepath)
 
-  local expandtab =
-    vim.api.nvim_get_option_value('expandtab', { scope = 'global' })
+  local expandtab = vim.api.nvim_get_option_value('expandtab', {})
 
   for _, line in ipairs(lines) do
     local heading_level, heading_text = line:match('^(#+)%s*(.+)')
@@ -37,8 +36,7 @@ function M.process_heading(content, filepath, heading_level_to_match)
 
       local indent = string.rep('\t', level)
       if expandtab then
-        local tabstop =
-          vim.api.nvim_get_option_value('tabstop', { scope = 'global' })
+        local tabstop = vim.api.nvim_get_option_value('tabstop', {})
         indent = string.rep(' ', level * tabstop)
       end
 
